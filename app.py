@@ -3,43 +3,14 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. إعدادات الصفحة الموسعة والاحترافية
+# 1. إعدادات الصفحة الاحترافية والموسعة (آمنة تماماً ولا تسبب أخطاء)
 st.set_page_config(
     page_title="مرصد الرياض العقاري المتكامل 2026",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# 2. حسم اتجاه التنسيق العربي (RTL) بطريقة متوافقة ومستقرة 100%
-st.markdown(
-    """
-    <style>
-    .stApp, div[data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        direction: RTL !important;
-        text-align: right !important;
-    }
-    h1, h2, h3, h4, h5, h6, p, li, span, label, .stMarkdown {
-        text-align: right !important;
-        direction: RTL !important;
-    }
-    div[data-testid="column"] {
-        direction: RTL !important;
-        text-align: right !important;
-    }
-    input, select, textarea, div[role="combobox"] {
-        text-align: right !important;
-        direction: RTL !important;
-    }
-    div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] {
-        text-align: right !important;
-        direction: RTL !important;
-    }
-    </style>
-    """,
-    unsafe_allow_headers=True
-)
-
-# 3. دالة توليد ملفات التقارير تلقائياً بشكل صحيح وآمن برمجياً
+# 2. دالة توليد ملفات التقارير المرجعية تلقائياً بشكل آمن على السيرفر
 def create_default_sources():
     source_files = {
         "SAMA_May_2026.pdf": "تقرير البنك المركزي السعودي SAMA مايو 2026",
@@ -48,20 +19,19 @@ def create_default_sources():
     for filename, content in source_files.items():
         if not os.path.exists(filename):
             try:
-                # فتح الملف بصيغة الكتابة النصية "w" وهي التي تقبل الـ encoding بشكل صحيح
                 with open(filename, "w", encoding="utf-8") as f:
                     f.write(content)
             except Exception:
                 pass
 
-# تشغيل الدالة فوراً لتجهيز الملفات على السيرفر
+# تشغيل دالة الملفات فوراً
 create_default_sources()
 
 # ==========================================
-# الواجهة الرئيسية للمرصد العقاري
+# الواجهة الرئيسية للمرصد العقاري الشامل
 # ==========================================
 st.title("📊 مرصد الرياض العقاري الاستثماري المتكامل (2026)")
-st.markdown("#### دليل المستشار المالي والتحليلي المعتمد لتقييم فرص الاستثمار وتحديد اتجاهات السوق في العاصمة")
+st.subheader("المنصة التحليلية الشاملة لتقييم فرص الاستثمار وتحديد اتجاهات السوق في العاصمة")
 st.write("---")
 
 # ==========================================
@@ -85,7 +55,7 @@ st.write("---")
 # القسم الثاني: مستشار الاستثمار التفاعلي المباشر للفرص العقارية
 # ==========================================
 st.markdown("### 🧮 مستشار الاستثمار التفاعلي الفوري")
-st.write("أدخل رأس المال الاستثماري والهدف المطلوب بالأسفل لتظهر لك التوصية والحي الملائم فوراً:")
+st.write("قم بتحديد رأس المال المتاح والهدف الاستثماري لتظهر لك التوصية الاستراتيجية والحي الأنسب فوراً:")
 
 planner_col1, planner_col2 = st.columns(2)
 
@@ -100,16 +70,16 @@ with planner_col1:
 
 with planner_col2:
     goal = st.selectbox(
-        "حدد الهدف المالي الأساسي للمحفظة:",
+        "حدد الهدف المالي الأساسي للمحفظة العقارية:",
         ["عوائد إيجارية سريعة ومستقرة (Yield)", "نمو رأس المال والأرباح المستقبلية (Capital Growth)"]
     )
 
-st.write("##### 🎯 توصية الخبير العقاري المخصصة للمحفظة:")
+st.write("##### 🎯 توصية المستشار العقاري المخصصة لمحفظتك:")
 with st.container(border=True):
     if capital < 800000:
         if goal == "عوائد إيجارية سريعة ومستقرة (Yield)":
             st.success("📍 الحي المرشح: قرطبة أو المونسية (شمال شرق الرياض)")
-            st.write("• **نوع العقار:** شقة سكنية (غرفتين وصالة) جاهزة ومؤثثة بشكل مودرن.")
+            st.write("• **نوع العقار:** شقة سكنية (غرفتين وصالة) جاهزة ومؤثثة بشكل عصري.")
             st.write("• **العائد الاستثماري الصافي المتوقع:** ما بين 8.2% إلى 9.0% سنويًا.")
             st.write("• **الرؤية الاستراتيجية:** القرب من محطات المترو والجامعات يضمن نسب إشغال مستمرة وتقليص فترات الشغور الإيجاري.")
         else:
@@ -120,11 +90,11 @@ with st.container(border=True):
     elif 800000 <= capital < 2500000:
         if goal == "عوائد إيجارية سريعة ومستقرة (Yield)":
             st.success("📍 الحي المرشح: الملقا أو الصحافة (بالقرب من مركز الملك عبدالله المالي KAFD)")
-            st.write("• **نوع العقار:** شقة فاخرة ذكية مخصصة لقطاع الأعمال والشركات الدولية.")
-            st.write("• **العائد الاستثماري الصافي المتوقع:** 7.8% إلى 8.5% سنوياً مع فرصة التأجير اليومي/الأسبوعي المربح.")
+            st.write("• **نوع العقار:** شقة فاخرة ذكية مخصصة لقطاع الأعمال والشركات الدولية والمغتربين.")
+            st.write("• **العائد الاستثماري الصافي المتوقع:** 7.8% إلى 8.5% سنوياً مع فرصة التأجير اليومي المربح.")
         else:
-            st.success("📍 الحي المرشح: النرجس أو الياسمين (محيط مشروع المربع الجديد)")
-            st.write("• **نوع العقار:** تاون هاوس عصري أو أرض سكنية بمساحة متوسطة تقع in مسار نمو المشاريع الكبرى لرؤية 2030.")
+            st.success("📍 الحي المرشح: النرجس أو الياسمين (محيط مشروع المربع الجديد والأيقونة)")
+            st.write("• **نوع العقار:** تاون هاوس عصري أو أرض سكنية بمساحة متوسطة تقع في مسار نمو المشاريع الكبرى لرؤية 2030.")
             st.write("• **معدل النمو الرأسمالي المتوقع:** 12% إلى 15% سنوياً.")
             
     else:
@@ -134,8 +104,8 @@ with st.container(border=True):
             st.write("• **العائد الاستثماري الصافي المتوقع:** 8.5% إلى 9.5% سنوياً.")
         else:
             st.success("📍 الحي المرشح: حطين أو الملقا الفاخرة (شمال غرب العاصمة)")
-            st.write("• **نوع العقار:** فلل سكنية فاخرة جداً ذات مواصفات إنشائية عالية الجودة وتصميمات فريدة من نوعها.")
-            st.write("• **معدل النمو الرأسمالي المتوقع:** 15% إلى 18% سنوياً نتيجة الندرة الشديدة للأصول المميزة بهذه المواقع.")
+            st.write("• **نوع العقار:** فلل سكنية فاخرة جداً ذات مواصفات إنشائية عالية الجودة وتصميمات فريدة ونادرة.")
+            st.write("• **معدل النمو الرأسمالي المتوقع:** 15% إلى 18% سنوياً نتيجة الندرة الشديدة للأصول المميزة بهذه المواقع الذهبية.")
 
 st.write("---")
 
@@ -174,40 +144,34 @@ with chart_col2:
 st.write("---")
 
 # ==========================================
-# القسم الرابع: أزرار تحميل المستندات الرسمية (بدون جداول مساعدة)
+# القسم Fourth: أزرار تحميل المستندات الرسمية المرجعية (بدون جداول مساعدة)
 # ==========================================
 st.write("### ⬇️ تنزيل المستندات الرسمية والتقارير المعتمدة لعام 2026")
 dl_col1, dl_col2, dl_col3 = st.columns(3)
 
 with dl_col1:
     st.info("📄 النشرة الإحصائية للبنك المركزي (SAMA)")
-    try:
-        with open("SAMA_May_2026.pdf", "rb") as file:
-            st.download_button(
-                label="📥 تحميل نشرة SAMA (PDF)",
-                data=file,
-                file_name="SAMA_May_2026.pdf",
-                mime="application/pdf"
-            )
-    except Exception:
-        st.caption("جاري إعداد الملف على السيرفر...")
+    with open("SAMA_May_2026.pdf", "rb") as file:
+        st.download_button(
+            label="📥 تحميل نشرة البنك المركزي SAMA (PDF)",
+            data=file,
+            file_name="SAMA_May_2026.pdf",
+            mime="application/pdf"
+        )
 
 with dl_col2:
     st.success("📄 تقرير الرقم القياسي لأسعار العقارات (GASTAT)")
-    try:
-        with open("GASTAT_Q1_2026.pdf", "rb") as file:
-            st.download_button(
-                label="📥 تحميل تقرير GASTAT (PDF)",
-                data=file,
-                file_name="GASTAT_Q1_2026.pdf",
-                mime="application/pdf"
-            )
-    except Exception:
-        st.caption("جاري إعداد الملف على السيرفر...")
+    with open("GASTAT_Q1_2026.pdf", "rb") as file:
+        st.download_button(
+            label="📥 تحميل تقرير الأسعار GASTAT (PDF)",
+            data=file,
+            file_name="GASTAT_Q1_2026.pdf",
+            mime="application/pdf"
+        )
 
 with dl_col3:
     st.markdown("📍 **البوابات الرسمية والمؤشرات الحية:**")
-    st.write("[🔗 تصفح منصة الهيئة العامة للعقار ↗️](https://rega.gov.sa)")
+    st.write("[🔗 تصفح منصة المؤشرات العقارية التفاعلية للهيئة العامة للعقار ↗️](https://rega.gov.sa)")
 
 st.write("---")
 
