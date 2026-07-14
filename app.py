@@ -10,7 +10,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# 2. توليد ملفات التقارير تلقائياً لضمان تشغيل أزرار التحميل مباشرة
+# 2. [هام جداً] توليد ملفات التقارير أولاً وقبل أي شيء لتعمل أزرار التحميل دون أخطاء
 def create_default_sources():
     source_files = {
         "SAMA_May_2026.pdf": "تقرير البنك المركزي السعودي (SAMA) - مايو 2026\nتطورات التمويل العقاري السكني للأفراد والشركات ومؤشرات الفائدة ونسب الاستقطاع.",
@@ -24,7 +24,37 @@ def create_default_sources():
             except Exception:
                 pass
 
+# تشغيل الدالة فوراً عند فتح السيرفر
 create_default_sources()
+
+# 3. حقن كود التنسيق لتغيير الواجهة من اليمين إلى اليسار (RTL) بطريقة متوافقة وآمنة
+st.markdown(
+    """
+    <style>
+    .stApp, div[data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        direction: RTL !important;
+        text-align: right !important;
+    }
+    h1, h2, h3, h4, h5, h6, p, li, span, label, .stMarkdown {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    div[data-testid="column"] {
+        direction: RTL !important;
+        text-align: right !important;
+    }
+    input, select, textarea, div[role="combobox"] {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    div[data-testid="stMetricValue"], div[data-testid="stMetricLabel"] {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    </style>
+    """,
+    unsafe_allow_headers=True
+)
 
 # ==========================================
 # الواجهة الرئيسية للمرصد العقاري
@@ -111,58 +141,4 @@ st.write("---")
 # ==========================================
 # القسم الثالث: الرسوم البيانية التفاعلية (بألوان متناسقة وفاخرة)
 # ==========================================
-chart_col1, chart_col2 = st.columns([2, 1])
-
-with chart_col1:
-    st.write("#### 📊 مقارنة أسعار المتر ونسب العوائد الاسترشادية لأهم الأحياء بالرياض")
-    data = {
-        'الحي': ['الياسمين', 'النرجس', 'الملقا', 'قرطبة', 'العارض', 'الصحافة'],
-        'متوسط سعر المتر (ر.س)': [7500, 6800, 9200, 6200, 5500, 8000],
-        'العائد الإيجاري المتوقع (%)': [7.5, 8.0, 7.0, 8.2, 8.5, 7.2]
-    }
-    df = pd.DataFrame(data)
-    fig = px.bar(
-        df, x='الحي', y='متوسط سعر المتر (ر.س)', color='العائد الإيجاري المتوقع (%)',
-        color_continuous_scale='Oranges', height=380
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-with chart_col2:
-    st.write("#### 🍕 توزيع حجم القروض العقارية الجديدة للأفراد")
-    funding_data = {
-        'النوع': ['فلل سكنية', 'شقق سكنية', 'أراضي'],
-        'المبلغ بالمليارات (ر.س)': [2.76, 1.27, 0.335]
-    }
-    df_funding = pd.DataFrame(funding_data)
-    fig_pie = px.pie(
-        df_funding, values='المبلغ بالمليارات (ر.س)', names='النوع', 
-        color_discrete_sequence=px.colors.sequential.Sunset, height=380
-    )
-    st.plotly_chart(fig_pie, use_container_width=True)
-
-st.write("---")
-
-# ==========================================
-# القسم الرابع: أزرار تحميل المستندات الرسمية (بدون جداول مساعدة)
-# ==========================================
-st.write("### ⬇️ تنزيل المستندات الرسمية والتقارير المعتمدة لعام 2026")
-dl_col1, dl_col2, dl_col3 = st.columns(3)
-
-with dl_col1:
-    st.info("📄 النشرة الإحصائية للبنك المركزي (SAMA)")
-    with open("SAMA_May_2026.pdf", "rb") as file:
-        st.download_button(
-            label="📥 تحميل نشرة البنك المركزي SAMA (PDF)",
-            data=file,
-            file_name="SAMA_May_2026.pdf",
-            mime="application/pdf"
-        )
-
-with dl_col2:
-    st.success("📄 تقرير الرقم القياسي لأسعار العقارات (GASTAT)")
-    with open("GASTAT_Q1_2026.pdf", "rb") as file:
-        st.download_button(
-            label="📥 تحميل تقرير الأسعار GASTAT (PDF)",
-            data=file,
-            file_name="GASTAT_Q1_2026.pdf",
-            mime="
+chart_col1, chart_col2 = st.columns(
