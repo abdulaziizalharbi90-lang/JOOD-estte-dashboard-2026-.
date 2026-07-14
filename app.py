@@ -3,14 +3,51 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. إعدادات الصفحة الموسعة
+# 1. إعدادات الصفحة الاحترافية والموسعة
 st.set_page_config(
-    page_title="مرصد الرياض العقاري 2026",
+    page_title="مرصد الرياض العقاري المتكامل 2026",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
 
-# 2. توليد ملفات المصادر تلقائياً لتعمل أزرار التحميل مباشرة دون الحاجة لرفعها يدوياً
+# 2. كود حقن CSS لتنسيق الخطوط والاتجاهات من اليمين إلى اليسار (RTL) بشكل آمن
+st.markdown(
+    """
+    <style>
+    /* تطبيق محاذاة النص والاتجاه من اليمين إلى اليسار في كامل التطبيق */
+    .stApp, div[data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+        direction: RTL !important;
+        text-align: right !important;
+    }
+    h1, h2, h3, h4, h5, h6, p, li, span, label, .stMarkdown {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    /* تعديل اتجاه وتوزيع الأعمدة والمربعات */
+    div[data-testid="column"] {
+        direction: RTL !important;
+        text-align: right !important;
+    }
+    /* محاذاة حقول الإدخال لتكون من اليمين */
+    input, select, textarea, div[role="combobox"] {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    /* تحسين مظهر بطاقات القياس الإحصائية (Metrics) */
+    div[data-testid="stMetricValue"] {
+        text-align: right !important;
+        direction: RTL !important;
+    }
+    div[data-testid="stMetricLabel"] {
+        text-align: right !important;
+        font-weight: bold !important;
+    }
+    </style>
+    """,
+    unsafe_allow_headers=True
+)
+
+# 3. دالة ذكية لتوليد ملفات المصادر تلقائياً لتعمل أزرار التحميل مباشرة
 def create_default_sources():
     source_files = {
         "SAMA_May_2026.pdf": "تقرير البنك المركزي السعودي (SAMA) - مايو 2026\nتطورات التمويل العقاري السكني للأفراد والشركات ومؤشرات الفائدة ونسب الاستقطاع.",
@@ -26,12 +63,16 @@ def create_default_sources():
 
 create_default_sources()
 
-# 3. واجهة مرصد الرياض العقاري المتكامل
+# ==========================================
+# الواجهة الرئيسية للمرصد العقاري
+# ==========================================
 st.title("📊 مرصد الرياض العقاري الاستثماري المتكامل (2026)")
-st.markdown("#### دليل المستشار المالي والتحليلي المعتمد لتقييم فرص الاستثمار وتحديد اتجاهات السوق")
+st.markdown("#### دليل المستشار المالي والتحليلي المعتمد لتقييم فرص الاستثمار وتحديد اتجاهات السوق في العاصمة")
 st.write("---")
 
-# 4. المؤشرات المالية العقارية القيادية (KPIs)
+# ==========================================
+# القسم الأول: بطاقات الأداء الرئيسي العقاري (SAMA & GASTAT)
+# ==========================================
 st.markdown("### 📈 مؤشرات السوق والتمويل المعتمدة لعام 2026")
 kpi_col1, kpi_col2, kpi_col3, kpi_col4 = st.columns(4)
 
@@ -46,8 +87,10 @@ with kpi_col4:
 
 st.write("---")
 
-# 5. مستشار الاستثمار العقاري التفاعلي المباشر
-st.markdown("### 🧮 مستشار الاستثمار التفاعلي الفوري (RTL)")
+# ==========================================
+# القسم الثاني: مستشار الاستثمار التفاعلي المباشر (RTL)
+# ==========================================
+st.markdown("### 🧮 مستشار الاستثمار التفاعلي الفوري")
 st.write("أدخل رأس المال الاستثماري والهدف المطلوب بالأسفل لتظهر لك التوصية والحي الملائم فوراً:")
 
 planner_col1, planner_col2 = st.columns(2)
@@ -67,7 +110,6 @@ with planner_col2:
         ["عوائد إيجارية سريعة ومستقرة (Yield)", "نمو رأس المال والأرباح المستقبلية (Capital Growth)"]
     )
 
-# منطق التحليل واقتراح أفضل الفرص
 st.write("##### 🎯 توصية الخبير العقاري المخصصة لك:")
 with st.container(border=True):
     if capital < 800000:
@@ -91,7 +133,7 @@ with st.container(border=True):
             st.write("• **نوع العقار:** تاون هاوس عصري أو أرض سكنية بمساحة متوسطة تقع في مسار نمو المشاريع الكبرى لرؤية 2030.")
             st.write("• **معدل النمو الرأسمالي المتوقع:** 12% إلى 15% سنوياً.")
             
-    else: # أكبر من 2.5 مليون ريال
+    else:
         if goal == "عوائد إيجارية سريعة ومستقرة (Yield)":
             st.success("📍 الحي المرشح: السليمانية أو المحمدية (وسط الرياض النابض)")
             st.write("• **نوع العقار:** عمارة سكنية صغيرة أو مبنى مكتبي وتأجيره لجهة تشغيلية واحدة بعقد طويل المدى لراحة تشغيلية تامة.")
@@ -103,7 +145,9 @@ with st.container(border=True):
 
 st.write("---")
 
-# 6. قسم الرسوم البيانية التفاعلية وتحليل توزيع المحافظ
+# ==========================================
+# القسم الثالث: الرسوم البيانية التفاعلية (بألوان منسقة ومتناغمة)
+# ==========================================
 chart_col1, chart_col2 = st.columns([2, 1])
 
 with chart_col1:
@@ -118,6 +162,8 @@ with chart_col1:
         df, x='الحي', y='متوسط سعر المتر (ر.س)', color='العائد الإيجاري المتوقع (%)',
         color_continuous_scale='Oranges', height=380
     )
+    # تعديل اتجاه الرسم البياني ومحاذاته
+    fig.update_layout(xaxis_title="الحي", yaxis_title="متوسط سعر المتر (ر.س)", font=dict(family="Arial", size=12))
     st.plotly_chart(fig, use_container_width=True)
 
 with chart_col2:
@@ -127,15 +173,18 @@ with chart_col2:
         'المبلغ بالمليارات (ر.س)': [2.76, 1.27, 0.335]
     }
     df_funding = pd.DataFrame(funding_data)
-    fig_pie = px.pie(df_funding, values='المبلغ بالمليارات (ر.س)', names='النوع', height=380)
+    fig_pie = px.pie(
+        df_funding, values='المبلغ بالمليارات (ر.س)', names='النوع', 
+        color_discrete_sequence=px.colors.sequential.Sunset, height=380
+    )
     st.plotly_chart(fig_pie, use_container_width=True)
 
 st.write("---")
 
-# 7. قسم تحميل التقارير والمستندات الرسمية المرجعية للتأكد من الأرقام
+# ==========================================
+# القسم الرابع: أزرار تحميل المستندات الرسمية المعتمدة
+# ==========================================
 st.write("### ⬇️ تنزيل المستندات الرسمية والتقارير المعتمدة لعام 2026")
-st.write("اضغط على الأزرار لتحميل المستندات المرجعية والتأكد من دقة البيانات المقدمة في الداش بورد:")
-
 dl_col1, dl_col2, dl_col3 = st.columns(3)
 
 with dl_col1:
@@ -149,7 +198,7 @@ with dl_col1:
         )
 
 with dl_col2:
-    st.success("📄 تقرير الرقم القياسي للأسعار (GASTAT)")
+    st.success("📄 تقرير الرقم القياسي لأسعار العقارات (GASTAT)")
     with open("GASTAT_Q1_2026.pdf", "rb") as file:
         st.download_button(
             label="📥 تحميل تقرير الأسعار GASTAT (PDF)",
@@ -159,14 +208,16 @@ with dl_col2:
         )
 
 with dl_col3:
-    st.help("📄 البوابات الرسمية والمؤشرات الحية")
+    # تم إلغاء st.help تماماً لحل المشكلة وإزالة أي جداول عريضة ومزعجة
+    st.markdown("📍 **البوابات الرسمية والمؤشرات الحية:**")
     st.write("[🔗 تصفح منصة المؤشرات العقارية التفاعلية للهيئة العامة للعقار ↗️](https://rega.gov.sa)")
 
 st.write("---")
 
-# 8. القرية المعرفية والبيئة التشريعية الشاملة للاستثمار العقاري
-st.write("### 📚 الدليل التشريعي والمعرفي للاستثمار العقاري")
-
+# ==========================================
+# القسم الخامس: الدليل والقرية التشريعية للاستثمار العقاري
+# ==========================================
+st.write("### 📚 الدليل والقرية التشريعية للاستثمار العقاري")
 info_col1, info_col2, info_col3 = st.columns(3)
 
 with info_col1:
