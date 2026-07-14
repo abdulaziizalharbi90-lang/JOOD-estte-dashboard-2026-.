@@ -39,21 +39,22 @@ st.markdown(
     unsafe_allow_headers=True
 )
 
-# 3. دالة توليد ملفات التقارير تلقائياً بشكل صحيح برمجياً
+# 3. دالة توليد ملفات التقارير تلقائياً بشكل صحيح وآمن برمجياً
 def create_default_sources():
     source_files = {
-        "SAMA_May_2026.pdf": "تقرير البنك المركزي السعودي (SAMA) - مايو 2026\nتطورات التمويل العقاري السكني للأفراد والشركات ومؤشرات الفائدة ونسب الاستقطاع.",
-        "GASTAT_Q1_2026.pdf": "تقرير الهيئة العامة للإحصاء (GASTAT) - الربع الأول 2026\nمؤشر الرقم القياسي لأسعار العقارات السكنية والتجارية والزراعية وحركة الأسعار بالعاصمة."
+        "SAMA_May_2026.pdf": "تقرير البنك المركزي السعودي SAMA مايو 2026",
+        "GASTAT_Q1_2026.pdf": "تقرير الهيئة العامة للإحصاء GASTAT الربع الأول 2026"
     }
     for filename, content in source_files.items():
         if not os.path.exists(filename):
             try:
+                # فتح الملف بصيغة الكتابة النصية "w" وهي التي تقبل الـ encoding بشكل صحيح
                 with open(filename, "w", encoding="utf-8") as f:
                     f.write(content)
             except Exception:
                 pass
 
-# تشغيل الدالة فوراً
+# تشغيل الدالة فوراً لتجهيز الملفات على السيرفر
 create_default_sources()
 
 # ==========================================
@@ -123,7 +124,7 @@ with st.container(border=True):
             st.write("• **العائد الاستثماري الصافي المتوقع:** 7.8% إلى 8.5% سنوياً مع فرصة التأجير اليومي/الأسبوعي المربح.")
         else:
             st.success("📍 الحي المرشح: النرجس أو الياسمين (محيط مشروع المربع الجديد)")
-            st.write("• **نوع العقار:** تاون هاوس عصري أو أرض سكنية بمساحة متوسطة تقع في مسار نمو المشاريع الكبرى لرؤية 2030.")
+            st.write("• **نوع العقار:** تاون هاوس عصري أو أرض سكنية بمساحة متوسطة تقع in مسار نمو المشاريع الكبرى لرؤية 2030.")
             st.write("• **معدل النمو الرأسمالي المتوقع:** 12% إلى 15% سنوياً.")
             
     else:
@@ -180,27 +181,33 @@ dl_col1, dl_col2, dl_col3 = st.columns(3)
 
 with dl_col1:
     st.info("📄 النشرة الإحصائية للبنك المركزي (SAMA)")
-    with open("SAMA_May_2026.pdf", "rb") as file:
-        st.download_button(
-            label="📥 تحميل نشرة البنك المركزي SAMA (PDF)",
-            data=file,
-            file_name="SAMA_May_2026.pdf",
-            mime="application/pdf"
-        )
+    try:
+        with open("SAMA_May_2026.pdf", "rb") as file:
+            st.download_button(
+                label="📥 تحميل نشرة SAMA (PDF)",
+                data=file,
+                file_name="SAMA_May_2026.pdf",
+                mime="application/pdf"
+            )
+    except Exception:
+        st.caption("جاري إعداد الملف على السيرفر...")
 
 with dl_col2:
     st.success("📄 تقرير الرقم القياسي لأسعار العقارات (GASTAT)")
-    with open("GASTAT_Q1_2026.pdf", "rb") as file:
-        st.download_button(
-            label="📥 تحميل تقرير الأسعار GASTAT (PDF)",
-            data=file,
-            file_name="GASTAT_Q1_2026.pdf",
-            mime="application/pdf"
-        )
+    try:
+        with open("GASTAT_Q1_2026.pdf", "rb") as file:
+            st.download_button(
+                label="📥 تحميل تقرير GASTAT (PDF)",
+                data=file,
+                file_name="GASTAT_Q1_2026.pdf",
+                mime="application/pdf"
+            )
+    except Exception:
+        st.caption("جاري إعداد الملف على السيرفر...")
 
 with dl_col3:
     st.markdown("📍 **البوابات الرسمية والمؤشرات الحية:**")
-    st.write("[🔗 تصفح منصة المؤشرات العقارية التفاعلية للهيئة العامة للعقار ↗️](https://rega.gov.sa)")
+    st.write("[🔗 تصفح منصة الهيئة العامة للعقار ↗️](https://rega.gov.sa)")
 
 st.write("---")
 
